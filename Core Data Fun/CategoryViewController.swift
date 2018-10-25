@@ -8,6 +8,18 @@
 
 import UIKit
 
+// MARK: - Core Data
+// we've made a DataModel that abstracts a SQLite database for us
+// there is some Core Data jargon to learn
+// Core Data Entity <--> Swift Type <--> database table
+// Core Data Attribute <--> Swift Property <--> database field
+// therefore a row in a table is like an object of a type
+
+// all of the underlying data store queries and methods are managed through an interface of type NSPersistentContainer
+// NSPersistentContainer has a NSManagedObjectContext which is like an intelligent scratchpad
+// think of the context like the staging area of a git repo
+// saving the context is like comitting in git, its when our changes are actually written to disk
+
 class CategoryViewController: UITableViewController {
     
     var categoryArray = ["Home", "Work", "Family"]
