@@ -42,6 +42,8 @@ class CategoryViewController: UITableViewController {
         // print out the url to the app's documents directory
         let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
         print(documentsDirectory)
+        
+        loadCategories()
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -61,8 +63,13 @@ class CategoryViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
+            // before removing from the array and the table view, we need to remove from our context and then save the context so the delete persists
+            context.delete(categoryArray[indexPath.row])
             categoryArray.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
+            
+            // have the delete persist
+            saveCategories()
         }
     }
     
@@ -93,6 +100,22 @@ class CategoryViewController: UITableViewController {
         
         alert.addAction(action)
         present(alert, animated: true, completion: nil)
+    }
+    
+    func loadCategories() {
+        // READ
+        // need "request" data from the persistent container using the context
+        let request: NSFetchRequest<Category> = Category.fetchRequest()
+        // typically with a SELECT statement, if you don't want all the rows in the table, you would specify a WHERE clause
+        // if we wanted a subset of the rows, we would use a NSPredicate object and add it to our request
+        // don't need to this now, because we do want all categories
+        do {
+            categoryArray = try context.fetch(request)
+        }
+        catch {
+            print("Error fetching categories: \(error)")
+        }
+        tableView.reloadData()
     }
     
     func saveCategories() {
