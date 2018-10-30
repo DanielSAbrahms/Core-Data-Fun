@@ -10,14 +10,14 @@ import UIKit
 
 class ItemsTableViewController: UITableViewController {
     
-    var category: String? = nil
+    var category: Category? = nil
     var itemArray = [String]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if let category = category {
-            self.navigationItem.title = "\(category) Items"
+        if let category = category, let name = category.name {
+            self.navigationItem.title = "\(name) Items"
         }
     }
 

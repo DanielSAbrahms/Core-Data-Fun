@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 // MARK: - Core Data
 // we've made a DataModel that abstracts a SQLite database for us
@@ -22,7 +23,15 @@ import UIKit
 
 class CategoryViewController: UITableViewController {
     
-    var categoryArray = ["Home", "Work", "Family"]
+    // recall: a persistent container abstracts a data store for us
+    // by default the data store for core data is a SQLite database
+    // we work with a persistent container's context instead of with the persistent container directly
+    // we will use the context for common DB style operations
+    // CRUD: Create, Read, Update, Delete
+    
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    
+    var categoryArray = [Category]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,7 +50,7 @@ class CategoryViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath)
         let category = categoryArray[indexPath.row]
-        cell.textLabel?.text = category
+        cell.textLabel?.text = category.name
         
         return cell
     }
@@ -71,12 +80,28 @@ class CategoryViewController: UITableViewController {
         
         let action = UIAlertAction(title: "Create", style: .default) { (alertAction) in
             let text = alertTextField.text!
-            self.categoryArray.append(text)
-            self.tableView.reloadData()
+            // need to CREATE a Category object using context
+            let newCategory = Category(context: self.context)
+            newCategory.name = text
+            self.categoryArray.append(newCategory)
+            self.saveCategories()
         }
         
         alert.addAction(action)
         present(alert, animated: true, completion: nil)
+    }
+    
+    func saveCategories() {
+        // this method will write the changes we have made to our context to disk (SQLite DB)
+        // try to save the context
+        do {
+            try context.save() // like a git commit
+        }
+        catch {
+            print("Error saving categories")
+        }
+        
+        self.tableView.reloadData()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
