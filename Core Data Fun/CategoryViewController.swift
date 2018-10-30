@@ -38,6 +38,10 @@ class CategoryViewController: UITableViewController {
         // Do any additional setup after loading the view, typically from a nib.
         
         self.navigationItem.leftBarButtonItem = self.editButtonItem
+        
+        // print out the url to the app's documents directory
+        let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        print(documentsDirectory)
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
