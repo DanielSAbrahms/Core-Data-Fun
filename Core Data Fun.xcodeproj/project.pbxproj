@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		451326A721920A82003C2BFD /* Item+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451326A521920A82003C2BFD /* Item+CoreDataClass.swift */; };
+		451326A821920A82003C2BFD /* Item+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451326A621920A82003C2BFD /* Item+CoreDataProperties.swift */; };
 		45F1E8B5218235190064801A /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 45F1E8B3218235190064801A /* DataModel.xcdatamodeld */; };
 		45F1E8B8218237980064801A /* Category+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F1E8B6218237980064801A /* Category+CoreDataClass.swift */; };
 		45F1E8B9218237980064801A /* Category+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F1E8B7218237980064801A /* Category+CoreDataProperties.swift */; };
@@ -19,6 +21,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		451326A521920A82003C2BFD /* Item+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Item+CoreDataClass.swift"; sourceTree = "<group>"; };
+		451326A621920A82003C2BFD /* Item+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Item+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		45F1E8B4218235190064801A /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
 		45F1E8B6218237980064801A /* Category+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Category+CoreDataClass.swift"; sourceTree = "<group>"; };
 		45F1E8B7218237980064801A /* Category+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Category+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -62,6 +66,8 @@
 		AEAE391A218168D200870FAD /* Core Data Fun */ = {
 			isa = PBXGroup;
 			children = (
+				451326A521920A82003C2BFD /* Item+CoreDataClass.swift */,
+				451326A621920A82003C2BFD /* Item+CoreDataProperties.swift */,
 				45F1E8B6218237980064801A /* Category+CoreDataClass.swift */,
 				45F1E8B7218237980064801A /* Category+CoreDataProperties.swift */,
 				AEAE391B218168D200870FAD /* AppDelegate.swift */,
@@ -149,10 +155,12 @@
 			files = (
 				AEAE391E218168D200870FAD /* CategoryViewController.swift in Sources */,
 				45F1E8B9218237980064801A /* Category+CoreDataProperties.swift in Sources */,
+				451326A821920A82003C2BFD /* Item+CoreDataProperties.swift in Sources */,
 				45F1E8B5218235190064801A /* DataModel.xcdatamodeld in Sources */,
 				AEAE391C218168D200870FAD /* AppDelegate.swift in Sources */,
 				45F1E8B8218237980064801A /* Category+CoreDataClass.swift in Sources */,
 				AEAE392E21816DC700870FAD /* ItemsTableViewController.swift in Sources */,
+				451326A721920A82003C2BFD /* Item+CoreDataClass.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

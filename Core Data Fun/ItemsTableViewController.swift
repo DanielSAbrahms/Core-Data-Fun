@@ -7,11 +7,12 @@
 //
 
 import UIKit
+import CoreData
 
 class ItemsTableViewController: UITableViewController {
     
     var category: Category? = nil
-    var itemArray = [String]()
+    var itemArray = [Item]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,10 +63,10 @@ class ItemsTableViewController: UITableViewController {
     
     @IBAction func addBarButtonPressed(_ sender: UIBarButtonItem) {
         var alertTextField = UITextField()
-        let alert = UIAlertController(title: "Create New Category", message: "", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Create New Item", message: "", preferredStyle: .alert)
         
         alert.addTextField { (textField) in
-            textField.placeholder = "Name of Category"
+            textField.placeholder = "Name of Item"
             alertTextField = textField
         }
         
