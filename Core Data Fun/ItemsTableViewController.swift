@@ -11,6 +11,8 @@ import CoreData
 
 class ItemsTableViewController: UITableViewController {
     
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    
     var category: Category? = nil
     var itemArray = [Item]()
 
@@ -38,7 +40,7 @@ class ItemsTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ItemCell", for: indexPath)
 
         let item = itemArray[indexPath.row]
-        cell.textLabel?.text = item
+        cell.textLabel?.text = item.name
 
         return cell
     }
@@ -72,12 +74,26 @@ class ItemsTableViewController: UITableViewController {
         
         let action = UIAlertAction(title: "Create", style: .default) { (alertAction) in
             let text = alertTextField.text!
-            self.itemArray.append(text)
-            self.tableView.reloadData()
+            let newItem = Item(context: self.context)
+            newItem.name = text
+            newItem.parentCategory = self.category
+            self.itemArray.append(newItem)
+            self.saveItems()
         }
         
         alert.addAction(action)
         present(alert, animated: true, completion: nil)
+    }
+    
+    func saveItems() {
+        
+        do {
+            try context.save()
+        }
+        catch {
+            print("Error saving items \(error)")
+        }
+        self.tableView.reloadData()
     }
     
 }
