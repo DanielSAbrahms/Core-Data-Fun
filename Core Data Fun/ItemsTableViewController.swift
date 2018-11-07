@@ -13,7 +13,12 @@ class ItemsTableViewController: UITableViewController {
     
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
-    var category: Category? = nil
+    var category: Category? = nil {
+        didSet {
+            // MARK: lab #6
+            loadItems()
+        }
+    }
     var itemArray = [Item]()
 
     override func viewDidLoad() {
@@ -41,6 +46,8 @@ class ItemsTableViewController: UITableViewController {
 
         let item = itemArray[indexPath.row]
         cell.textLabel?.text = item.name
+        // MARK: lab #8.d.
+        cell.accessoryType = itemArray[indexPath.row].done ? .checkmark : .none
 
         return cell
     }
@@ -49,9 +56,12 @@ class ItemsTableViewController: UITableViewController {
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
+            // MARK: lab #7
+            context.delete(itemArray[indexPath.row])
             // Delete the row from the data source
             itemArray.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
+            saveItems()
         }
     }
 
@@ -60,6 +70,13 @@ class ItemsTableViewController: UITableViewController {
         let item = itemArray.remove(at: sourceIndexPath.row)
         itemArray.insert(item, at: destinationIndexPath.row)
         tableView.reloadData()
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // MARK: lab #8.d.
+        itemArray[indexPath.row].done = !itemArray[indexPath.row].done
+        saveItems()
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
     
@@ -77,6 +94,8 @@ class ItemsTableViewController: UITableViewController {
             let newItem = Item(context: self.context)
             newItem.name = text
             newItem.parentCategory = self.category
+            // MARK: lab #8.c.
+            newItem.done = false
             self.itemArray.append(newItem)
             self.saveItems()
         }
@@ -96,4 +115,57 @@ class ItemsTableViewController: UITableViewController {
         self.tableView.reloadData()
     }
     
+    // MARK: lab #6
+    func loadItems(withPredicate predicate: NSPredicate? = nil) {
+        let request: NSFetchRequest<Item> = Item.fetchRequest()
+        // MARK: lab #14
+        let sortDescripter = NSSortDescriptor(key: "name", ascending: true, selector: #selector(NSString.caseInsensitiveCompare))
+        request.sortDescriptors = [sortDescripter]
+        
+        let categoryPredicate = NSPredicate(format: "parentCategory.name MATCHES %@", category!.name!)
+        
+        // MARK: lab #11.b
+        if let additionalPredicate = predicate {
+            let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: [categoryPredicate, additionalPredicate])
+            request.predicate = compoundPredicate
+        }
+        else {
+            request.predicate = categoryPredicate
+        }
+        
+        do {
+            itemArray = try context.fetch(request)
+        } catch {
+            print("Error loading items \(error)")
+        }
+        tableView.reloadData()
+    }
+    
+}
+
+// MARK: lab #13 and 10.b.
+extension ItemsTableViewController: UISearchBarDelegate {
+    
+    // MARK: lab #10.b.
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        print(searchText)
+        // MARK: lab #12
+        if searchText.isEmpty {
+            loadItems()
+            searchBar.resignFirstResponder()
+        }
+        else {
+            // perform search
+            performSearch(searchBar: searchBar)
+        }
+    }
+    
+    // MARK: lab #11
+    func performSearch(searchBar: UISearchBar) {
+        if let text = searchBar.text {
+            // MARK: lab #11.a.
+            let predicate = NSPredicate(format: "name CONTAINS[cd] %@", text)
+            loadItems(withPredicate: predicate)
+        }
+    }
 }
